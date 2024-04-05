@@ -9,9 +9,11 @@ package domain;
  * @author Miona
  */
 public enum Zanr {
-    ROMAN,
-    POEZIJA,
-    ISTORIJSKI,
-    NAUCNA_FANTASTIKA,
-    DETEKTIVSKI;
+    Roman,
+    Poezija,
+    Istorijski,
+    Naucna_fantastika,
+    Detektivski,
+    Novela,
+    Drama;
 }

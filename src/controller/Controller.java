@@ -4,6 +4,7 @@
  */
 package controller;
 
+import baza.DBBroker;
 import domain.Autor;
 import domain.Knjiga;
 import domain.Zanr;
@@ -15,6 +16,7 @@ import java.util.List;
  * @author Miona
  */
 public class Controller {
+    private DBBroker dbb; //ovde je null, mora da ga napravimo u konstruktoru
     private List<Knjiga> listaKnjiga;
     private List<Autor> listaAutora;
     
@@ -32,6 +34,10 @@ public class Controller {
     
     //privatni konstruktor!!!
     private Controller() {
+        dbb = new DBBroker();
+        
+        //Ne treba nam sledeci deo jer sada citamo iz baze podatke
+        /*
         Autor a1 = new Autor("Ivo","Andric", 1892,"Biografija autora Ive Andrica bla bla");
         Autor a2 = new Autor("Danilo","Kis", 1935,"Biografija autora Danila Kisa bla bla");
         Autor a3 = new Autor("Mesa","Selimovic", 1910,"Biografija autora Mese Selimovica bla bla");
@@ -51,6 +57,7 @@ public class Controller {
         listaAutora.add(a1);
         listaAutora.add(a2);
         listaAutora.add(a3);
+*/
    
     }
 
@@ -70,14 +77,35 @@ public class Controller {
         this.listaAutora = listaAutora;
     }
 
-    public void obrisiKnjigu(int selektovaniRed) {
-        listaKnjiga.remove(selektovaniRed);
+    //u sledecoj metodi je za brisanje knjige iz memorije umesto id stajalo selektovani red
+    public void obrisiKnjigu(int id) {
+        dbb.obrisiKnjiguIzBaze(id);
+        
+        //OVO SLEDECE JE VEZANO ZA PODATKE IZ LOK MEMORIJE
+        //listaKnjiga.remove(selektovaniRed);
     }
 
     public void dodajKnjiga(Knjiga novaKnjiga) {
-        listaKnjiga.add(novaKnjiga);
+        dbb.dodajKnjiguUBazu(novaKnjiga);
+        
+        
+        
+        //Sledeci kod je za dodavanje u lokalnu memoriju
+        //listaKnjiga.add(novaKnjiga);
         //System.out.println("KNJIGA JE DODATA");
         //System.out.println(listaKnjiga);
+    }
+
+    public List<Knjiga> ucitajListuKnjiga() {
+        return dbb.ucitajListuKnjigaIzBaze();
+    }
+
+    public List<Autor> ucitajListuAutora() {
+        return dbb.ucitajListuAutoraIzBaze();
+    }
+
+    public void azurirajKnjiguIzBaze(Knjiga knjigaZaIzmenu) {
+        dbb.azurirajKnjiguIzBaze(knjigaZaIzmenu);
     }
     
     

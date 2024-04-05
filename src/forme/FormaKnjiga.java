@@ -1,5 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+/* Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package forme;
@@ -11,6 +10,13 @@ import domain.Zanr;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+
+import javax.swing.JOptionPane;
+
+import javax.swing.JOptionPane;
+
+import domain.Zanr;
+import java.util.Random;
 
 /**
  *
@@ -217,9 +223,11 @@ public class FormaKnjiga extends javax.swing.JDialog {
         
         Zanr zanr = (Zanr) cbZanr.getSelectedItem();
         Autor autor = (Autor) cbAutor.getSelectedItem();
+         Random random = new Random();
+         int id = 101 + random.nextInt(Integer.MAX_VALUE - 100);
         
         //ONDA KREIRAMO KNJIGU SA TIM IZVUCENIM PODACIMA
-        Knjiga novaKnjiga = new Knjiga(naziv, autor, isbn, godinaIzdanja, zanr);
+        Knjiga novaKnjiga = new Knjiga(id,naziv, autor, isbn, godinaIzdanja, zanr);
         
         //NA KRAJU DODAJEMO KNJIGU U BAZU ALI PREKO KONTORLERA
         kontroler.dodajKnjiga(novaKnjiga);
@@ -243,11 +251,16 @@ public class FormaKnjiga extends javax.swing.JDialog {
             return;
         }
         
+        
         //CUVAMO PODATKE U NASU PROMENLJIVU
+       
         knjigaZaIzmenu.setAutor(autor);
         knjigaZaIzmenu.setNaslov(naziv);
         knjigaZaIzmenu.setGodinaIzdanja(godinaIzdanja);
         knjigaZaIzmenu.setZanr(zanr);
+        
+        //sledeci red koda je za rad sa bazom
+        kontroler.azurirajKnjiguIzBaze(knjigaZaIzmenu);
         
         
         //OSVEZAVAMO TABELU
@@ -279,7 +292,8 @@ public class FormaKnjiga extends javax.swing.JDialog {
 
     private void popuniComboboxAutorima() {
         cbAutor.removeAllItems();
-        List<Autor> autori = kontroler.getListaAutora();
+        //List<Autor> autori = kontroler.getListaAutora();
+        List<Autor> autori = kontroler.ucitajListuAutora();
         for(Autor a : autori)
             cbAutor.addItem(a);
     }

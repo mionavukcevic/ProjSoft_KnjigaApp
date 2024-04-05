@@ -23,7 +23,9 @@ public class GlavnaForma extends javax.swing.JFrame {
     public GlavnaForma() {
         initComponents();
         kontroler = Controller.getInstance();
-        ModelTabeleKnjige modelTabele = new ModelTabeleKnjige(kontroler.getListaKnjiga());
+        //ModelTabeleKnjige modelTabele = new ModelTabeleKnjige(kontroler.getListaKnjiga());
+        ModelTabeleKnjige modelTabele = new ModelTabeleKnjige(kontroler.ucitajListuKnjiga());
+
         tblKnjige.setModel(modelTabele);
     }
 
@@ -189,8 +191,11 @@ public class GlavnaForma extends javax.swing.JFrame {
         if(selektovaniRed == -1){
             JOptionPane.showMessageDialog(this, "Morate selektovati knjigu koju zelite da obrisete!", "Upozorenje", JOptionPane.WARNING_MESSAGE);
         }else{
+            ModelTabeleKnjige mtk = (ModelTabeleKnjige) tblKnjige.getModel();
+            int id = mtk.getListaKnjiga().get(selektovaniRed).getId();
             Controller kontroler = Controller.getInstance();
-            kontroler.obrisiKnjigu(selektovaniRed);
+            kontroler.obrisiKnjigu(id);
+            //kontroler.obrisiKnjigu(selektovaniRed);
             
             
             //Azuriranje modela tabele
@@ -213,7 +218,20 @@ public class GlavnaForma extends javax.swing.JFrame {
             return;
         }
         
-        Knjiga selektovanaKnjiga = kontroler.getListaKnjiga().get(selektovaniRed);
+        //Sledeci red koga je za podatke iz lok mem
+        //Knjiga selektovanaKnjiga = kontroler.getListaKnjiga().get(selektovaniRed);
+        
+        
+        Knjiga selektovanaKnjiga = kontroler.ucitajListuKnjiga().get(selektovaniRed);
+
+        
+        
+        
+        
+        
+        
+        
+        
         
         //SADA OTVARAMO NOVU FORMU ZA IZMENU
         new FormaKnjiga(this, true, selektovanaKnjiga).setVisible(true);
@@ -273,8 +291,12 @@ public class GlavnaForma extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     void osveziTabelu() {
-        ModelTabeleKnjige modelTabele = (ModelTabeleKnjige) tblKnjige.getModel();
-        modelTabele.osveziPodatke();
+        ModelTabeleKnjige mtk = new ModelTabeleKnjige(kontroler.ucitajListuKnjiga());
+        tblKnjige.setModel(mtk);
+        
+        //Sledeci deo koda je kada smo osvezavali podatke sacuvane u lokalnoj memoriji
+        //ModelTabeleKnjige modelTabele = (ModelTabeleKnjige) tblKnjige.getModel();
+        //modelTabele.osveziPodatke();
     }
 
     
